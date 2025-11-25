@@ -1,0 +1,10 @@
+com\bau\merenda\repository\UsuarioRepository.class
+com\bau\merenda\model\TipoContagem.class
+com\bau\merenda\service\UsuarioService.class
+com\bau\merenda\service\ItemService.class
+com\bau\merenda\repository\ItemRepository.class
+com\bau\merenda\controller\BauMerendaController.class
+com\bau\merenda\model\Usuario.class
+com\bau\merenda\model\Item.class
+com\bau\merenda\BauMerendaApplication.class
+com\bau\merenda\service\BCryptPasswordEncoder.class

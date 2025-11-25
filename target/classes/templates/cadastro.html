@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro - Baú da Merenda</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <header class="header-modern-chic">
+    <img src="img/logo.jpeg" alt="Logo Baú da Merenda" class="logo-chic" />
+    <h1>Bem-vinda, Merendeira!</h1>
+    <p>Crie seu cadastro para continuar</p>
+  </header>
+
+  <main class="main-content-modern-chic">
+    <section class="section-card auth-card">
+      <h2>Cadastro</h2>
+      <form th:action="@{/cadastro}" method="post" th:object="${usuario}" class="auth-form">
+        <input type="text" th:field="*{usuario}" placeholder="Usuário" required />
+        <input type="password" th:field="*{senha}" placeholder="Senha" required />
+        <input type="password" th:field="*{confirmaSenha}" placeholder="Confirme a senha" required />
+        <button class="btn-chic primary" type="submit">Cadastrar</button>
+      </form>
+      <p th:if="${erro}" th:text="${erro}" id="auth-message"></p>
+      <a href="login" class="btn-chic secondary-outline">Voltar ao Login</a>
+    </section>
+  </main>
+  <footer class="footer-modern-chic">
+    <p>&copy; 2025 Baú da Merenda Digital</p>
+  </footer>
+</body>
+
+</html>

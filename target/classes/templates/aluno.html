@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardápio do Dia - Aluno</title>
+
+  <!-- Fontes do Google -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- CSS -->
+  <style>
+    /* ===== Reset e Globais ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #ebf5e9;
+      color: #2e4a31;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===== Cabeçalho ===== */
+    .header-modern-chic {
+      background-color: #386641;
+      color: #f0f9f2;
+      width: 100%;
+      padding: 25px 20px 15px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-modern-chic h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #c9d8c4;
+    }
+
+    .header-time-box {
+      background-color: #436449;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 5px;
+      color: white;
+    }
+
+    /* ===== Conteúdo ===== */
+    .main-content-modern-chic {
+      width: 95%;
+      max-width: 500px;
+      padding-top: 30px;
+    }
+
+    .cardapio-hoje-chic {
+      background: white;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f0f0f0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .cardapio-hoje-chic h3 {
+      font-size: 1.2rem;
+      color: #386641;
+      margin-bottom: 20px;
+    }
+
+    /* ===== Botões de turno ===== */
+    .turnos-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .btn-turno {
+      background-color: #6a8b5f;
+      color: white;
+      border: none;
+      padding: 12px 0;
+      border-radius: 9999px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-turno.active {
+      background-color: #436449;
+      border: 2px solid white;
+    }
+
+    /* ===== Mensagem ===== */
+    .mensagem-vazia {
+      padding: 20px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      color: #7f8c8d;
+      margin-bottom: 30px;
+    }
+
+    /* ===== Botão Confirmar ===== */
+    .btn-grande-confirmar {
+      background-color: #d1d5db;
+      color: #6b7280;
+      border-radius: 9999px;
+      padding: 15px 30px;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: 0.3s;
+      cursor: not-allowed;
+      border: none;
+    }
+
+    .btn-grande-confirmar:not(:disabled) {
+      background-color: #436449;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* ===== Link Admin ===== */
+    .btn-admin-link {
+      display: inline-block;
+      color: #6a994e;
+      border: 2px solid #6a994e;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-admin-link:hover {
+      background-color: #6a994e;
+      color: white;
+    }
+
+    /* ===== Rodapé ===== */
+    .footer-modern-chic {
+      background-color: #386641;
+      color: #f0f9f2;
+      text-align: center;
+      padding: 15px 0;
+      width: 100%;
+      margin-top: auto;
+      font-size: 0.8rem;
+    }
+
+    /* ===========================================================
+       ===== ESTILO NOVO DOS ITENS (IGUAL À IMAGEM) =====
+       =========================================================== */
+
+    #itensTurno .item {
+      background: #ffffff;
+      border: 1px solid #d3e7d3;
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin: 15px auto;
+      font-weight: 600;
+      font-size: 18px;
+      color: #264c2f;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* checkbox escondido estilo custom */
+    .item input[type="checkbox"] {
+      transform: scale(1.3);
+      accent-color: #436449;
+    }
+
+    /* campo de quantidade escondido - você controla via JS */
+    .campoQtd {
+      width: 60px;
+      padding: 5px;
+      border-radius: 8px;
+      border: 1px solid #cddccc;
+      font-size: 16px;
+      text-align: center;
+      color: #264c2f;
+    }
+  </style>
+
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="header-modern-chic">
+    <h1>Cardápio do Dia</h1>
+    <div class="header-info">
+      <div id="dataInfo"></div>
+      <div id="horaInfo" class="header-time-box"></div>
+    </div>
+  </header>
+
+  <main class="main-content-modern-chic">
+    <section class="section-card cardapio-hoje-chic">
+      <h3>Selecione o Turno:</h3>
+
+      <div class="turnos-buttons">
+        <button type="button" class="btn-turno" data-turno="Manhã">Manhã</button>
+        <button type="button" class="btn-turno" data-turno="Tarde">Tarde</button>
+        <button type="button" class="btn-turno" data-turno="Noite">Noite</button>
+        <input type="hidden" id="turnoSelecionado" />
+      </div>
+
+      <div id="listaItens">
+        <p class="mensagem-vazia" id="mensagemVazia">Selecione um turno.</p>
+        <ul id="itensTurno" style="list-style:none; padding:0;"></ul>
+      </div>
+
+      <button type="button" id="btnConfirmar" class="btn-grande-confirmar" disabled>
+        CONFIRMAR ESCOLHA
+      </button>
+    </section>
+
+    <section style="text-align:center; margin-top:30px;">
+      <a href="/login" class="btn-admin-link">ACESSO ADMINISTRATIVO</a>
+    </section>
+  </main>
+
+  <footer class="footer-modern-chic">
+    <p>&copy; 2025 Baú da Merenda Digital</p>
+  </footer>
+
+  <!-- JS ORIGINAL SEU — sem mudanças -->
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+// ⏰ MOSTRAR DATA E HORA NA TELA DO ALUNO
+function atualizarDataHora() {
+  const agora = new Date();
+
+  // Configuração da data por extenso
+  const opcoesData = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+
+  const dataFormatada = agora.toLocaleDateString("pt-BR", opcoesData);
+  const horaFormatada = agora.toLocaleTimeString("pt-BR");
+
+  // Atualiza elementos HTML
+  document.getElementById("dataInfo").textContent = dataFormatada;
+  document.getElementById("horaInfo").textContent = horaFormatada;
+}
+
+// Atualiza ao carregar
+atualizarDataHora();
+
+// Atualiza a cada 1 segundo
+setInterval(atualizarDataHora, 1000);
+
+      const botoes = document.querySelectorAll('.btn-turno');
+      const inputTurno = document.getElementById('turnoSelecionado');
+      const btnConfirmar = document.getElementById('btnConfirmar');
+      const lista = document.getElementById('itensTurno');
+      const msg = document.getElementById('mensagemVazia');
+
+      const itens = JSON.parse(/*[[${itensJson}]]*/ '[]');
+
+      botoes.forEach(botao => {
+        botao.addEventListener('click', () => {
+
+          const turno = botao.getAttribute('data-turno');
+          inputTurno.value = turno;
+
+          botoes.forEach(b => b.classList.remove('active'));
+          botao.classList.add('active');
+
+          const itensFiltrados = itens.filter(item =>
+            item.periodo === turno || item.periodo === "Todos"
+          );
+
+          lista.innerHTML = '';
+
+          if (itensFiltrados.length === 0) {
+            msg.style.display = 'block';
+            btnConfirmar.disabled = true;
+          } else {
+            msg.style.display = 'none';
+            btnConfirmar.disabled = false;
+
+            itensFiltrados.forEach(item => {
+              lista.innerHTML += `
+                <div class="item">
+                  <label>
+                    <input type="checkbox" class="checkItem" value="${item.id}">
+                    ${item.nome}
+                  </label>
+                <input type="number" class="campoQtd" min="1" value="1" disabled>
+
+                </div>
+              `;
+            });
+
+            document.querySelectorAll('.checkItem').forEach(chk => {
+              chk.addEventListener('change', function () {
+                this.parentElement.nextElementSibling.disabled = !this.checked;
+              });
+            });
+          }
+        });
+      });
+
+      btnConfirmar.addEventListener('click', function () {
+
+        const turnoFinal = inputTurno.value;
+        if (!turnoFinal) {
+          alert("Selecione um turno.");
+          return;
+        }
+
+        const escolhas = [];
+
+        document.querySelectorAll('.item').forEach(div => {
+          const checkbox = div.querySelector('.checkItem');
+          const quantidade = div.querySelector('.campoQtd');
+
+          if (checkbox.checked) {
+            escolhas.push({
+              itemId: parseInt(checkbox.value),
+              quantidade: parseInt(quantidade.value),
+              turno: turnoFinal
+            });
+          }
+        });
+
+        if (escolhas.length === 0) {
+          alert("Selecione pelo menos um item.");
+          return;
+        }
+
+        fetch("/aluno/confirmar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(escolhas)
+        })
+          .then(r => r.text())
+          .then(res => {
+            alert("Escolha registrada com sucesso!");
+          })
+          .catch(err => {
+            alert("Erro ao registrar escolha.");
+          });
+
+      });
+
+    });
+  </script>
+
+</body>
+</html>

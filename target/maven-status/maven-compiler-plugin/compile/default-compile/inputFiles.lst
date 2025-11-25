@@ -1,0 +1,10 @@
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\BauMerendaApplication.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\controller\BauMerendaController.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\model\Item.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\model\TipoContagem.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\model\Usuario.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\repository\ItemRepository.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\repository\UsuarioRepository.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\service\BCryptPasswordEncoder.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\service\ItemService.java
+C:\Users\3035921\Downloads\bau-merenda-repositories-services-native DENISE\bau-merenda-repositories-services-native DENISE\src\main\java\com\bau\merenda\service\UsuarioService.java

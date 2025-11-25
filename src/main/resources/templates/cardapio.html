@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel da Merendeira - Baú da Merenda</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <header class="header-modern-chic">
+    <h1>Painel da Merendeira</h1>
+    <p>Gerencie o cardápio e acompanhe a demanda.</p>
+    <div><a href="/aluno/cardapio" class="btn-chic secondary-outline">Voltar para Alunos</a></div>
+  </header>
+
+  <section id="admin-panel-section" class="painel-container">
+
+    <section id="cardapio-gerenciamento-section" class="section-card">
+      <h2>Gerenciar Cardápio do Dia</h2>
+
+      <form th:action="@{/cardapio}" th:object="${item}" method="post" class="item-form">
+        <div class="form-group">
+          <label for="item-nome">Nome do Alimento:</label>
+          <input type="text" id="item-nome" th:field="*{nome}" placeholder="Ex: Arroz Carreteiro" required />
+        </div>
+
+        <div class="form-group">
+          <label for="item-tipo">Tipo de Contagem:</label>
+          <select id="item-tipo" th:field="*{tipo}">
+            <option th:value="Porção">Por Porção (ex: Arroz, Feijão)</option>
+            <option th:value="Unidade">Por Unidade (ex: Maçã, Pão)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="item-periodo">Período de Disponibilidade:</label>
+          <select id="item-periodo" th:field="*{periodo}">
+            <option th:value="Manhã">Manhã</option>
+            <option th:value="Tarde">Tarde</option>
+            <option th:value="Noite">Noite</option>
+            <option th:value="Todos">Todos os Períodos</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-chic primary">
+          ADICIONAR ITEM AO CARDÁPIO
+        </button>
+      </form>
+
+      <div id="cardapio-list-admin" class="cardapio-lista-vazia-box">
+        <p th:if="${#lists.isEmpty(itens)}" class="mensagem-cardapio-vazio">Nenhum item no cardápio. Adicione novos
+          itens acima.</p>
+
+        <table th:unless="${#lists.isEmpty(itens)}">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Período</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item : ${itens}">
+              
+              <!-- Nome -->
+              <td class="col-nome">
+                <span class="nome" th:text="${item.nome}"></span>
+              </td>
+          
+              <!-- Tipo -->
+              <td class="col-tipo">
+                <span class="tipo" th:text="${item.tipo}"></span>
+              </td>
+          
+              <!-- Período -->
+              <td class="col-periodo">
+                <span class="periodo" th:text="${item.periodo}"></span>
+              </td>
+          
+              <!-- Ações -->
+              <td class="col-remover">
+                <a th:href="@{'/cardapio/remover/' + ${item.id}}"
+                   class="btn-chic action-danger-mini">
+                  Remover
+                </a>
+              </td>
+          
+            </tr>
+          </tbody>
+          
+          
+        </table>
+      </div>
+    </section>
+
+    <section id="relatorio-section" class="section-card">
+      <h2>Relatório de Merenda do Dia</h2>
+      <h3>Demandas dos Alunos</h3>
+
+<table th:if="${not #lists.isEmpty(demandas)}">
+  <thead>
+    <tr>
+      <th>Turno</th>
+      <th>Item Escolhido</th>
+      <th>Quantidade</th>
+      <th>Data/Hora</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr th:each="d : ${demandas}">
+      <td th:text="${d.turno}"></td>
+      <td th:text="${d.item.nome}"></td>
+
+      <td th:text="${d.quantidade}"></td>
+      <td th:text="${#temporals.format(d.dataHora, 'dd/MM HH:mm')}"></td>
+    </tr>
+  </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(demandas)}" class="mensagem-relatorio-vazio">
+  Nenhuma demanda registrada ainda.
+</p>
+
+
+      <div id="relatorio-contagem-merendeira">
+        <p th:if="${#lists.isEmpty(itens)}" class="mensagem-relatorio-vazio">O cardápio do dia não foi definido.</p>
+      </div>
+
+      <div class="chart-container" id="demanda-geral-item">
+        <h3>Demanda Geral por Item</h3>
+        <p th:if="${#lists.isEmpty(itens)}">Conteúdo do gráfico/relatório vazio</p>
+        <canvas th:unless="${#lists.isEmpty(itens)}" id="merendaChart"></canvas>
+      </div>
+
+      <div class="chart-container" id="demanda-agregada-periodo">
+        <h3>Demanda Agregada por Período</h3>
+        <p th:if="${#lists.isEmpty(itens)}">Conteúdo do gráfico/relatório vazio</p>
+        <canvas th:unless="${#lists.isEmpty(itens)}" id="demandaPorPeriodoChart"></canvas>
+      </div>
+      <div class="botoes-acoes-admin">
+    
+        <form th:action="@{/cardapio/zerar}" method="post" 
+              onsubmit="return confirm('ATENÇÃO: Você tem certeza que deseja APAGAR TODOS os itens do cardápio? Esta ação é irreversível!');">
+            <button type="submit" id="reset-dados-btn" class="btn-chic action-danger">
+                Zerar Dados do Dia
+            </button>
+        </form>
+    
+        <a href="/logout" class="btn-chic secondary-outline">
+            Sair
+        </a>
+    
+    </div>
+  </section>
+  <footer class="footer-modern-chic">
+    <p>&copy; 2025 Baú da Merenda Digital</p>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // ============================
+        // 1. Dados vindos do backend
+        // ============================
+        const demandaPorItem = /*[[${demandaPorItem}]]*/ {};
+        const demandaPorPeriodo = /*[[${demandaPorPeriodo}]]*/ {};
+
+        console.log("Itens:", demandaPorItem);
+        console.log("Períodos:", demandaPorPeriodo);
+
+        // ============================
+        // 2. Gráfico: Demanda por Item
+        // ============================
+        const chartItem = document.getElementById("merendaChart");
+        if (chartItem && Object.keys(demandaPorItem).length > 0) {
+            
+            new Chart(chartItem, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(demandaPorItem),
+                    datasets: [{
+                        label: "Quantidade",
+                        data: Object.values(demandaPorItem),
+                        backgroundColor: "rgba(54, 162, 235, 0.5)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // ====================================
+        // 3. Gráfico: Demanda por Período
+        // ====================================
+        const chartPeriodo = document.getElementById("demandaPorPeriodoChart");
+        if (chartPeriodo && Object.keys(demandaPorPeriodo).length > 0) {
+
+            new Chart(chartPeriodo, {
+                type: "pie",
+                data: {
+                    labels: Object.keys(demandaPorPeriodo),
+                    datasets: [{
+                        data: Object.values(demandaPorPeriodo),
+                        backgroundColor: [
+                            "rgba(255, 159, 64, 0.7)",
+                            "rgba(75, 192, 192, 0.7)",
+                            "rgba(153, 102, 255, 0.7)"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+    });
+</script>
+
+
+</body>
+
+</html>
